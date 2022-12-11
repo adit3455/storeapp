@@ -1,36 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:storeapp/config/app_router.dart';
+import 'package:storeapp/config/theme.dart';
 
-void main() => runApp(const MaterialApp(home: HomePage()));
+import 'screens/home_screen.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0,
-          title: Container(
-            color: Colors.black,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: const Text(
-              "Dashboard",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                fontFamily: 'Avenir',
-              ),
-            ),
-          ),
-          backgroundColor: Colors.transparent,
-          iconTheme: const IconThemeData(color: Colors.black),
-          actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.favorite))
-          ],
-        ),
-        body: Container());
-  }
-}
+void main() => runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: AppRouter.onGenerateRoute,
+      initialRoute: HomeScreen.routeName,
+      theme: theme(),
+    ));
