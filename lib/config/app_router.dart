@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:storeapp/models/export_model.dart';
 import '../screens/export_screens.dart';
 import '../widget/export_widgets.dart';
 
@@ -16,11 +17,15 @@ class AppRouter {
       case '/catalog':
         return MaterialPageRoute(
             settings: const RouteSettings(name: CatalogScreen.routeName),
-            builder: (context) => const CatalogScreen());
+            builder: (context) => CatalogScreen(
+                  category: settings.arguments as Category,
+                ));
       case '/product':
         return MaterialPageRoute(
             settings: const RouteSettings(name: ProductScreen.routeName),
-            builder: (context) => const ProductScreen());
+            builder: (context) => ProductScreen(
+                  product: settings.arguments as Product,
+                ));
       case '/wishlist':
         return MaterialPageRoute(
             settings: const RouteSettings(name: WishlistScreen.routeName),
