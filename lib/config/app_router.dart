@@ -30,6 +30,10 @@ class AppRouter {
         return MaterialPageRoute(
             settings: const RouteSettings(name: WishlistScreen.routeName),
             builder: (context) => const WishlistScreen());
+      case '/splash':
+        return MaterialPageRoute(
+            settings: const RouteSettings(name: SplashScreen.routeName),
+            builder: (context) => const SplashScreen());
 
       default:
         return _errorRoute();

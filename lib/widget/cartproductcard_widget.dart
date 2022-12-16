@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../blocs/export_blocs.dart';
 import '../models/export_model.dart';
 
 class CartProductCard extends StatelessWidget {
   final Product product;
+  final int quantity;
   const CartProductCard({
     Key? key,
+    required this.quantity,
     required this.product,
   }) : super(key: key);
 
@@ -38,12 +41,18 @@ class CartProductCard extends StatelessWidget {
         const SizedBox(width: 10.0),
         Row(
           children: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.remove_circle)),
+            IconButton(
+                onPressed: () =>
+                    context.read<CartBloc>().add(CartProductRemoved(product)),
+                icon: const Icon(Icons.remove_circle)),
             Text(
-              "1",
-              style: Theme.of(context).textTheme.headline5,
+              "$quantity",
+              style: Theme.of(context).textTheme.headline4,
             ),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.add_circle)),
+            IconButton(
+                onPressed: () =>
+                    context.read<CartBloc>().add(CartProductAdded(product)),
+                icon: const Icon(Icons.add_circle)),
           ],
         )
       ],

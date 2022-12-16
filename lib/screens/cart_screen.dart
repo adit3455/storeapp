@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
-import 'package:storeapp/models/export_model.dart';
 
+import '../blocs/export_blocs.dart';
 import '../widget/export_widgets.dart';
 
 class CartScreen extends StatelessWidget {
@@ -35,101 +35,144 @@ class CartScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Add \$20.00 for FREE Delivery",
-                          style: Theme.of(context).textTheme.headline5),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              elevation: 0,
-                              shape: const RoundedRectangleBorder()),
-                          onPressed: () => Navigator.pushNamed(context, "/"),
-                          child: const Text("Add More Product"))
-                    ],
-                  ),
-                  const SizedBox(height: 10.0),
-                  CartProductCard(product: Product.products[0]),
-                  CartProductCard(product: Product.products[0]),
-                ],
-              ),
-              Column(
-                children: [
-                  const Divider(thickness: 2.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 20.0),
-                    child: Column(
+        body: BlocBuilder<CartBloc, CartState>(
+          builder: (context, state) {
+            if (state is CartLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state is CartLoaded) {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("SUBTOTAL",
+                            Text(state.cart.freeDeliveryString,
                                 style: Theme.of(context).textTheme.headline5),
-                            Text("\$5.98",
-                                style: Theme.of(context).textTheme.headline5)
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.black,
+                                    elevation: 0,
+                                    shape: const RoundedRectangleBorder()),
+                                onPressed: () =>
+                                    Navigator.pushNamed(context, "/"),
+                                child: const Text("Add More Product"))
                           ],
                         ),
                         const SizedBox(height: 10.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("DELIVERY FEE",
-                                style: Theme.of(context).textTheme.headline5),
-                            Text("\$5.98",
-                                style: Theme.of(context).textTheme.headline5)
-                          ],
-                        ),
+                        SizedBox(
+                          height: 350,
+                          child: ListView.builder(
+                            itemCount: state.cart
+                                .productQuantity(state.cart.products)
+                                .keys
+                                .length,
+                            itemBuilder: (context, index) {
+                              return CartProductCard(
+                                product: state.cart
+                                    .productQuantity(state.cart.products)
+                                    .keys
+                                    .elementAt(index),
+                                quantity: state.cart
+                                    .productQuantity(state.cart.products)
+                                    .values
+                                    .elementAt(index),
+                              );
+                            },
+                          ),
+                        )
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 10.0),
-                  Stack(
-                    children: [
-                      Container(
-                        height: 60,
-                        width: MediaQuery.of(context).size.width,
-                        decoration:
-                            BoxDecoration(color: Colors.black.withAlpha(50)),
-                      ),
-                      Container(
-                        height: 60,
-                        margin: const EdgeInsets.all(5.0),
-                        width: MediaQuery.of(context).size.width,
-                        decoration: const BoxDecoration(color: Colors.black),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      children: [
+                        const Divider(thickness: 2.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 20.0),
+                          child: Column(
                             children: [
-                              Text("TOTAL",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline5!
-                                      .copyWith(color: Colors.white)),
-                              Text("\$5.98",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline5!
-                                      .copyWith(color: Colors.white))
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("SUBTOTAL",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline5),
+                                  Text("\$${state.cart.subTotalString}",
+                                      style:
+                                          Theme.of(context).textTheme.headline5)
+                                ],
+                              ),
+                              const SizedBox(height: 10.0),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("DELIVERY FEE",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline5),
+                                  Text("\$${state.cart.deliveryFeeString}",
+                                      style:
+                                          Theme.of(context).textTheme.headline5)
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            ],
-          ),
+                        const SizedBox(height: 10.0),
+                        Stack(
+                          children: [
+                            Container(
+                              height: 60,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  color: Colors.black.withAlpha(50)),
+                            ),
+                            Container(
+                              height: 60,
+                              margin: const EdgeInsets.all(5.0),
+                              width: MediaQuery.of(context).size.width,
+                              decoration:
+                                  const BoxDecoration(color: Colors.black),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("TOTAL",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5!
+                                            .copyWith(color: Colors.white)),
+                                    Text("\$${state.cart.totalString}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5!
+                                            .copyWith(color: Colors.white))
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              );
+            } else {
+              return const Text("Theres Something Wrong");
+            }
+          },
         ));
   }
 }

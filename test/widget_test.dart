@@ -95,83 +95,152 @@
 //   int? age;
 // }
 
-import 'package:equatable/equatable.dart';
+// import 'package:equatable/equatable.dart';
 
-class Person extends Equatable {
-  String? name;
-  int? age;
-  String? address;
+// class Person extends Equatable {
+//   String? name;
+//   int? age;
+//   String? address;
 
-  Person({
-    required this.name,
-    required this.age,
-    required this.address,
+//   Person({
+//     required this.name,
+//     required this.age,
+//     required this.address,
+//   });
+
+//   void printName() {
+//     "Halo nama Saya $name";
+//   }
+
+//   @override
+//   List<Object?> get props => [name, address, age];
+// }
+
+// class PersonSister extends Person {
+//   String sister;
+//   PersonSister({super.name, super.age, super.address, required this.sister});
+
+//   @override
+//   void printName() {
+//     print(
+//         "Halo nama Saya $name saya tinggal di $address dan umur $age nama kaka saya $sister");
+//   }
+// }
+
+// class PersonBrother implements PersonSister {
+//   String brotherName;
+
+//   @override
+//   String? address;
+
+//   @override
+//   int? age;
+
+//   @override
+//   String? name;
+
+//   @override
+//   String sister;
+//   PersonBrother({
+//     required this.brotherName,
+//     this.address,
+//     this.age,
+//     this.name,
+//     required this.sister,
+//   });
+
+//   @override
+//   void printName() {
+//     print("Halo nama saya $name, alamat saya $address, ");
+//   }
+
+//   @override
+//   List<Object?> get props => [address, age, name, sister];
+
+//   @override
+//   bool? get stringify => false;
+// }
+
+// class Price {
+//   List<double> listOfPrice = [20.0, 10.0, 40.0];
+
+//   double get subTotal =>
+//       listOfPrice.fold(0, (previousValue, element) => previousValue + element);
+
+//   String get subTotalToString => subTotal.toStringAsFixed(2);
+// }
+
+// void main() {
+//   Person a =
+//       Person(name: "Adit", age: 22, address: "JLN EKA RASMI KOMP SPRINGVILLE");
+//   Person b =
+//       Person(name: "Adit", age: 22, address: "JLN EKA RASMI KOMP SPRINGVILLE");
+
+//   PersonSister c = PersonSister(sister: "Ditami");
+//   c.address = 'JL eka rasmi';
+//   c.age = 22;
+//   c.name = 'Adit';
+//   c.printName();
+
+//   var d = Price();
+//   print(d.subTotalToString);
+
+//   // print("${a.hashCode} dan ${b.hashCode}");
+// }
+
+import 'package:dio/dio.dart';
+
+class HttpRequestGetData {
+  int? id;
+  String? email;
+  String? firstName;
+  String? lastName;
+  String? avatar;
+
+  HttpRequestGetData({
+    this.id,
+    this.email,
+    this.firstName,
+    this.lastName,
+    this.avatar,
   });
 
-  void printName() {
-    "Halo nama Saya $name";
+  factory HttpRequestGetData.fromJson(Map<String, dynamic> json) {
+    return HttpRequestGetData(
+      id: json['id'],
+      email: json['email'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      avatar: json['avatar'],
+    );
   }
 
-  @override
-  List<Object?> get props => [name, address, age];
-}
-
-class PersonSister extends Person {
-  String sister;
-  PersonSister({super.name, super.age, super.address, required this.sister});
-
-  @override
-  void printName() {
-    print(
-        "Halo nama Saya $name saya tinggal di $address dan umur $age nama kaka saya $sister");
+  Future<HttpRequestGetData> getUserData() async {
+    var response = await Dio().get(
+      "https://reqres.in/api/users",
+      options: Options(
+        headers: {
+          "Content-Type": "application/json",
+        },
+      ),
+    );
+    Map<String, dynamic> obj = response.data['data'];
+    return HttpRequestGetData.fromJson(obj);
   }
 }
 
-class PersonBrother implements PersonSister {
-  String brotherName;
+void main() async {
+  var response = await Dio().get(
+    "https://reqres.in/api/users/2",
+    options: Options(
+      headers: {
+        "Content-Type": "application/json",
+      },
+    ),
+  );
+  Map<String, dynamic> obj = response.data['data'];
 
-  @override
-  String? address;
+  var a = HttpRequestGetData.fromJson(obj);
 
-  @override
-  int? age;
-
-  @override
-  String? name;
-
-  @override
-  String sister;
-  PersonBrother({
-    required this.brotherName,
-    this.address,
-    this.age,
-    this.name,
-    required this.sister,
-  });
-
-  @override
-  void printName() {
-    print("Halo nama saya $name, alamat saya $address, ");
-  }
-
-  @override
-  List<Object?> get props => [address, age, name, sister];
-
-  @override
-  bool? get stringify => false;
-}
-
-void main() {
-  Person a =
-      Person(name: "Adit", age: 22, address: "JLN EKA RASMI KOMP SPRINGVILLE");
-  Person b =
-      Person(name: "Adit", age: 22, address: "JLN EKA RASMI KOMP SPRINGVILLE");
-
-  PersonSister c = PersonSister(sister: "Ditami");
-  c.address = 'JL eka rasmi';
-  c.age = 22;
-  c.name = 'Adit';
-  c.printName();
-
-  // print("${a.hashCode} dan ${b.hashCode}");
+  print(a.avatar);
 }
