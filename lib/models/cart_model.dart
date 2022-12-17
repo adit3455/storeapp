@@ -11,7 +11,7 @@ class CartModel extends Equatable {
   List<Object?> get props => [products];
 
   Map productQuantity(products) {
-    var quantity = {};
+    Map quantity = {};
 
     products.forEach((product) {
       if (!quantity.containsKey(product)) {
@@ -25,7 +25,6 @@ class CartModel extends Equatable {
 
   double get subTotal =>
       products.fold(0, (total, current) => total + current.price);
-
   String get subTotalString => subTotal.toStringAsFixed(2);
 
   double deliveryFee(subTotal) {
