@@ -5,3 +5,5 @@ export 'sectiontitle_widget.dart';
 export 'productcard_widget.dart';
 export 'productcarousel_widget.dart';
 export 'cartproductcard_widget.dart';
+export 'ordersummary_widget.dart';
+export 'ordersummaryproductcard_widget.dart';

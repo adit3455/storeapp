@@ -25,7 +25,7 @@ class Product extends Equatable {
   }
 
   static Product fromSnapshot(DocumentSnapshot snapshot) {
-    var product = Product(
+    Product product = Product(
       name: snapshot['name'],
       category: snapshot['category'],
       imageUrl: snapshot['imageUrl'],

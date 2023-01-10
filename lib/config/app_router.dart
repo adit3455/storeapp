@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:storeapp/models/export_model.dart';
+import 'package:storeapp/screens/paymentmethod_screen.dart';
 import '../screens/export_screens.dart';
 import '../widget/export_widgets.dart';
 
@@ -30,10 +31,23 @@ class AppRouter {
         return MaterialPageRoute(
             settings: const RouteSettings(name: WishlistScreen.routeName),
             builder: (context) => const WishlistScreen());
+      case '/checkout':
+        return MaterialPageRoute(
+            settings: const RouteSettings(name: CheckoutScreen.routeName),
+            builder: (context) => const CheckoutScreen());
       case '/splash':
         return MaterialPageRoute(
             settings: const RouteSettings(name: SplashScreen.routeName),
             builder: (context) => const SplashScreen());
+      case '/order':
+        return MaterialPageRoute(
+            settings:
+                const RouteSettings(name: OrderConfirmationScreen.routeName),
+            builder: (context) => const OrderConfirmationScreen());
+      case '/payment':
+        return MaterialPageRoute(
+            settings: const RouteSettings(name: PaymentMethodScreen.routeName),
+            builder: (context) => const PaymentMethodScreen());
 
       default:
         return _errorRoute();

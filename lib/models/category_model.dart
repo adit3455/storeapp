@@ -19,22 +19,4 @@ class Category extends Equatable {
         Category(name: snapshot['name'], imageUrl: snapshot['imageUrl']);
     return category;
   }
-
-  static List<Category> categories = [
-    const Category(
-      name: "Soft Drinks",
-      imageUrl:
-          "https://sagaciresearch.com/wp-content/uploads/2019/09/Top-10-Carbonated-Soft-Drinks-Egypt-V3.jpg",
-    ),
-    const Category(
-      name: "Smoothies",
-      imageUrl:
-          "https://www.dbs.com/spark/index/id_id/site/assets/images/repository/articles/Resep-Homemade-Smoothies-Bowl.jpg",
-    ),
-    const Category(
-      name: "Water",
-      imageUrl:
-          "https://post.healthline.com/wp-content/uploads/2020/06/glass-drinking-water-732x549-thumbnail-1-732x549.jpg",
-    ),
-  ];
 }

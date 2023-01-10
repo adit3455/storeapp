@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Zero To Unicorn"),
+      appBar: CustomAppBar(title: "Zero To Unicorn", isBackward: false),
       bottomNavigationBar: const CustomBottomNavigationBar(),
       body: SingleChildScrollView(
         child: Column(

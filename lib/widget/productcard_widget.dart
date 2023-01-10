@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../blocs/export_blocs.dart';
 import '../models/product_model.dart';
 

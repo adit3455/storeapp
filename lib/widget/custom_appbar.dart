@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String title;
   final bool isFavoriteIcon;
+  final bool isBackward;
 
   CustomAppBar({
+    this.isBackward = true,
     required this.title,
     this.isFavoriteIcon = true,
     Key? key,
@@ -15,6 +17,11 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       centerTitle: true,
       elevation: 0,
+      leading: isBackward
+          ? IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(Icons.arrow_back))
+          : const SizedBox(),
       title: Container(
         color: Colors.black,
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
